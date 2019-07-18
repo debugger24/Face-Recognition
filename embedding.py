@@ -13,13 +13,11 @@ align = openface.AlignDlib(dlibFacePredictor)
 
 net = openface.TorchNeuralNet(networkModel, imgDim)
 
-def getRep(imgPath):
-    if verbose:
-        print("Processing {}.".format(imgPath))
-
-    bgrImg = cv2.imread(imgPath)
+def getRep(bgrImg, imgPath=''):
     if bgrImg is None:
-        raise Exception("Unable to load image: {}".format(imgPath))
+        print ("Unable to load image: {}".format(imgPath))
+        return None
+
     rgbImg = cv2.cvtColor(bgrImg, cv2.COLOR_BGR2RGB)
 
     if verbose:
@@ -28,14 +26,17 @@ def getRep(imgPath):
     start = time.time()
     bb = align.getLargestFaceBoundingBox(rgbImg)
     if bb is None:
-        raise Exception("Unable to find a face: {}".format(imgPath))
+        print("Unable to find a face: {}".format(imgPath))
+        return None
+
     if verbose:
         print("  + Face detection took {} seconds.".format(time.time() - start))
 
     start = time.time()
     alignedFace = align.align(imgDim, rgbImg, bb, landmarkIndices=openface.AlignDlib.OUTER_EYES_AND_NOSE)
     if alignedFace is None:
-        raise Exception("Unable to align image: {}".format(imgPath))
+        print("Unable to align image: {}".format(imgPath))
+        return None
     if verbose:
         print("  + Face alignment took {} seconds.".format(time.time() - start))
 
