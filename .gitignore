@@ -1,2 +1,4 @@
 data/
+embedding/
+models/
 *.pyc
