@@ -25,5 +25,5 @@ def getPrediction(embedding):
         name.append(key)
         error.append(getMSE(value, embedding))
     
-    result = pd.DataFrame({'name': name, 'error': error}).sort_values('error').loc[:5]
+    result = pd.DataFrame({'name': name, 'error': error}).sort_values('error').iloc[:5]
     print (result)
