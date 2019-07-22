@@ -1,5 +1,5 @@
 from embedding import getRep
-import cv
+import cv2
 import pickle
 import glob
 from tqdm import tqdm
@@ -10,14 +10,14 @@ images = glob.glob('data/train/*.JPG')
 embedding_dict = {}
 pbar = tqdm(total=len(images))
 for imagePath in images:
-    bgrImg = cv2.imread(imgPath)
-    embedding = getRep(bgrImg, imgPath)
+    bgrImg = cv2.imread(imagePath)
+    embedding = getRep(bgrImg, imagePath)
     fileName = imagePath.split('/')[-1].split('.')[0]
     embedding_dict[fileName] = embedding
     pbar.update(1)
 pbar.close()
 
 # Save image embedding to Disk
-f = open("embedding_" + str(int(time.time())) + ".pkl","wb")
-pickle.dump(dict,f)
+f = open("embedding/embedding_" + str(int(time.time())) + ".pkl","wb")
+pickle.dump(embedding_dict, f)
 f.close()
